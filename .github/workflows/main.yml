@@ -1,0 +1,21 @@
+name: Devenv image building
+
+on:
+  push:
+    branches: [ main ]
+  schedule:
+    - cron: '0 0 * * *'
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Build and push
+        run: |
+          docker login ghcr.io -u aman-lj -p ${{ secrets.GITHUB_TOKEN }}
+          docker image build -t ghcr.io/aman-lj/devenv:latest .
+          docker push ghcr.io/aman-lj/devenv:latest
+      
